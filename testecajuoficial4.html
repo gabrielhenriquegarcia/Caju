@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Mercado livre</title>
+<link rel="icon" type="image/png" href="https://www.lofrano.com.br/wp-content/uploads/2025/07/mercado-livre.png">
+
+<style>
+body {
+  margin: 0;
+  font-family: monospace;
+  overflow: hidden;
+  background: black;
+}
+
+/* =======================
+   VÍRUS NA TELA
+======================= */
+#glitch {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: black;
+  overflow: hidden;
+}
+
+.virus {
+  position: fixed;
+  font-size: 18px;
+  color: red;
+  animation: flick 0.15s infinite;
+}
+
+@keyframes flick {
+  0% { opacity: 1; }
+  50% { opacity: 0.2; }
+  100% { opacity: 1; }
+}
+
+/* =======================
+   POPUPS REALISTAS
+======================= */
+.popup {
+  position: fixed;
+  width: 360px;
+  background: #f0f0f0;
+  color: #111;
+  border: 1px solid #888;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  font-family: Arial, sans-serif;
+  z-index: 9999;
+  animation: shake 0.12s infinite;
+}
+
+.popup-header {
+  background: #c00000;
+  color: white;
+  padding: 6px 10px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.popup-body {
+  padding: 15px;
+  font-size: 14px;
+}
+
+.popup-footer {
+  padding: 10px;
+  text-align: right;
+}
+
+.popup button {
+  padding: 5px 12px;
+  border: 1px solid #666;
+  background: white;
+  cursor: pointer;
+}
+
+@keyframes shake {
+  0% { transform: translate(0,0); }
+  50% { transform: translate(1px,-1px); }
+  100% { transform: translate(-1px,1px); }
+}
+
+/* =======================
+   ESCOLHA
+======================= */
+#choice {
+  display: none;
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+}
+
+button {
+  padding: 15px;
+  margin: 10px;
+  background: black;
+  color: white;
+  border: 2px solid white;
+  cursor: pointer;
+}
+
+/* =======================
+   BSOD
+======================= */
+#bsod {
+  display: none;
+  background: #0000aa;
+  color: white;
+  width: 100vw;
+  height: 100vh;
+  padding: 40px;
+  position: relative;
+}
+
+#log {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+/* =======================
+   TELA PRETA
+======================= */
+#black {
+  display: none;
+  background: black;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* =======================
+   BOOT
+======================= */
+#boot {
+  display: none;
+  background: black;
+  color: lime;
+  width: 100vw;
+  height: 100vh;
+  padding: 40px;
+}
+
+/* =======================
+   FINAL
+======================= */
+#final {
+  display: none;
+  background: black;
+  color: white;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 34px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="glitch"></div>
+
+<div id="choice">
+  <p>AUTORIZAÇÃO NECESSÁRIA</p>
+  <p>Corrigir falhas do sistema?</p>
+  <button id="yes">SIM</button>
+  <button id="no">NÃO</button>
+</div>
+
+<div id="bsod">
+  <h1>:(</h1>
+  <p>Seu dispositivo encontrou um problema.</p>
+  <p>COLETANDO DADOS...</p>
+  <p id="load">0%</p>
+  <div id="log"></div>
+</div>
+
+<div id="black"></div>
+
+<div id="boot"></div>
+
+<div id="final"></div>
+
+<script>
+
+/* =======================
+   ELEMENTOS
+======================= */
+const glitch = document.getElementById("glitch");
+const choice = document.getElementById("choice");
+const bsod = document.getElementById("bsod");
+const black = document.getElementById("black");
+const boot = document.getElementById("boot");
+const final = document.getElementById("final");
+
+/* =======================
+   VÍRUS NA TELA
+======================= */
+setInterval(() => {
+  const v = document.createElement("div");
+  v.className = "virus";
+  v.style.top = Math.random()*100 + "%";
+  v.style.left = Math.random()*100 + "%";
+
+  const msgs = [
+    "TROJAN DETECTED",
+    "SYSTEM ERROR",
+    "MEMORY CORRUPTION",
+    "ACCESS VIOLATION",
+    "UNKNOWN PROCESS"
+  ];
+
+  v.innerText = msgs[Math.floor(Math.random()*msgs.length)];
+  glitch.appendChild(v);
+
+  setTimeout(()=>v.remove(), 2500);
+
+}, 120);
+
+/* =======================
+   POPUPS REALISTAS
+======================= */
+function spawnPopup(){
+  const p = document.createElement("div");
+  p.className = "popup";
+
+  const msgs = [
+    "Erro crítico do sistema detectado",
+    "Processo desconhecido em execução",
+    "Memória instável detectada",
+    "Acesso não autorizado ao kernel"
+  ];
+
+  p.innerHTML = `
+    <div class="popup-header">Windows System Alert</div>
+    <div class="popup-body">
+      ⚠ ${msgs[Math.floor(Math.random()*msgs.length)]}
+    </div>
+    <div class="popup-footer">
+      <button onclick="this.parentElement.parentElement.remove()">OK</button>
+    </div>
+  `;
+
+  p.style.top = Math.random()*100 + "%";
+  p.style.left = Math.random()*100 + "%";
+  p.style.transform = "translate(-50%,-50%)";
+
+  document.body.appendChild(p);
+
+  setTimeout(()=>p.remove(), 2200);
+}
+
+let popupInterval = setInterval(()=>{
+  spawnPopup();
+}, 180);
+
+/* =======================
+   ENTRA ESCOLHA
+======================= */
+setTimeout(()=>{
+  clearInterval(popupInterval);
+  choice.style.display = "block";
+}, 4000);
+
+/* =======================
+   BOTÃO NÃO FOGE (MAIS LENTO)
+======================= */
+let no = document.getElementById("no");
+let tries = 0;
+
+no.addEventListener("mouseover", () => {
+  const x = Math.random() * (window.innerWidth - 100);
+  const y = Math.random() * (window.innerHeight - 60);
+
+  no.style.position = "fixed";
+  no.style.left = x + "px";
+  no.style.top = y + "px";
+});
+
+no.onclick = () => {
+  tries++;
+  if (tries >= 8) {
+    no.style.display = "none";
+  }
+};
+
+/* =======================
+   SIM → FULLSCREEN + BSOD
+======================= */
+document.getElementById("yes").onclick = () => {
+
+  document.documentElement.requestFullscreen?.();
+
+  choice.style.display = "none";
+  glitch.style.display = "none";
+  bsod.style.display = "block";
+
+  /* loading */
+  let p = 0;
+  const load = document.getElementById("load");
+
+  const interval = setInterval(() => {
+    p += Math.random()*20;
+    if (p >= 100) {
+      p = 100;
+      clearInterval(interval);
+    }
+    load.innerText = Math.floor(p) + "%";
+  }, 300);
+
+  /* logs BSOD */
+  const log = document.getElementById("log");
+
+  const processes = [
+    "verificando kernel...",
+    "analisando memória...",
+    "checando drivers...",
+    "isolando ameaça...",
+    "coletando dump...",
+    "restaurando sistema..."
+  ];
+
+  let logInterval = setInterval(() => {
+    const line = document.createElement("div");
+    line.innerText = processes[Math.floor(Math.random()*processes.length)];
+    log.appendChild(line);
+
+    if (log.children.length > 10) {
+      log.removeChild(log.children[0]);
+    }
+  }, 350);
+
+  /* =======================
+     TELA PRETA
+  ======================= */
+  setTimeout(() => {
+    clearInterval(logInterval);
+    bsod.style.display = "none";
+    black.style.display = "block";
+  }, 5000);
+
+  /* =======================
+     BOOT
+  ======================= */
+  setTimeout(() => {
+    black.style.display = "none";
+    boot.style.display = "block";
+
+    let i = 0;
+
+    const msgs = [
+      "reiniciando sistema...",
+      "carregando kernel principal...",
+      "verificando integridade do sistema...",
+      "restaurando arquivos críticos...",
+      "limpando processos corrompidos...",
+      "reconstruindo memória de sistema...",
+      "validando drivers essenciais...",
+      "checando subsistema gráfico...",
+      "sincronizando hardware...",
+      "otimizando inicialização...",
+      "finalizando verificação de segurança...",
+      "preparando ambiente estável..."
+    ];
+
+    let bootInterval = setInterval(() => {
+      const d = document.createElement("div");
+      d.innerText = msgs[i % msgs.length];
+      boot.appendChild(d);
+
+      i++;
+
+      if (boot.children.length > 12) {
+        boot.removeChild(boot.children[0]);
+      }
+
+      if (i > 18) {
+        clearInterval(bootInterval);
+
+        setTimeout(() => {
+          boot.style.display = "none";
+
+          /* =======================
+             7 SEGUNDOS DE TELA PRETA
+          ======================= */
+          black.style.display = "block";
+
+          setTimeout(() => {
+            black.style.display = "none";
+            final.style.display = "flex";
+
+            final.innerHTML = `
+              <div>
+                SISTEMA ESTABILIZADO<br><br>
+                <b>AGORA SIGA ATÉ O CORREDOR</b>
+              </div>
+            `;
+
+          }, 7000);
+
+        }, 1500);
+      }
+
+    }, 250);
+
+  }, 8000);
+
+};
+
+</script>
+
+</body>
+</html>
